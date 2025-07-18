@@ -1,0 +1,27 @@
+﻿title: Day1
+---
+<<declare $customerName = "" as string>>
+<<set $customerName = "Aneela's Friend">>
+<<declare $expectedTea = "" as string>>
+<<set $expectedTea = "karak">>
+
+The door opens, and an older woman enters the tea shop.
+Aneela's Friend: Oh my goodness... Is this Aneela's old place?
+Aneela's Friend: Wait—Junnat? It's really you!
+Aneela's Friend: I can't believe you opened up this chai shop… your mom always talked about doing it one day.
+Aneela's Friend: I used to come by for her tea all the time. She made the best karak chai in the neighbourhood.
+Aneela's Friend: I've missed her… and I've missed this.
+Aneela's Friend: Mind making me a cup of karak chai, the way she used to?
+<<loadMinigame DialogueSystem>>
+<<stop>>
+===
+
+title: Day1Post
+---
+The customer takes a deep breath.
+Aneela's Friend: Wow… this smells just like hers.
+Aneela's Friend: You've got her touch, sweetheart.
+Aneela's Friend: I'll definitely be coming back — and bringing the whole aunty squad with me.
+She smiles softly.
+<<endDay DialogueSystem>>
+===
