@@ -16,6 +16,6 @@ public class MinigameManager : MonoBehaviour
             Debug.Log("Wrong tea");
             // restart here prob script doesnt say
         }
-        SceneManager.LoadScene("Story");
+        SceneTransitionManager.Instance.TransitionToScene("Story");
     }
 }

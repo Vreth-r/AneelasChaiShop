@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
 
     public string expectedTea;
     public string resultNodeAfterMinigame;
-
-    public int currentDay = 1; // initial value
+    public SpriteRenderer character;
+    public int currentDay = 1;
 
     private DialogueRunner runner;
 
     private void Awake()
     {
-        SceneManager.LoadScene("Story");
+        // Singleton pattern
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -23,25 +23,57 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        runner = FindFirstObjectByType<DialogueRunner>();
-        StartDay();
+        DontDestroyOnLoad(character.gameObject);
+        SceneTransitionManager.Instance.TransitionToScene("Story");
+        // Register to listen for scene load events after the menu (for now)
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    public void StartDay()
+    // Gets called every time a new scene finishes loading
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        runner.StartDialogue($"Day{currentDay}");
+        // We wait a single frame to ensure DialogueRunner is initialized
+        if (scene.name == "Story")
+        {
+            character.gameObject.SetActive(true);
+            StartCoroutine(StartDialogueAfterSceneReady());
+        }
+        else if (scene.name == "Minigame")
+        {
+            character.gameObject.SetActive(false);
+        }
+    }
+
+    private System.Collections.IEnumerator StartDialogueAfterSceneReady()
+    {
+        // Wait one frame to ensure all scene Start() methods have run
+        yield return null;
+
+        runner = FindFirstObjectByType<DialogueRunner>();
+        if (runner != null && string.IsNullOrEmpty(resultNodeAfterMinigame))
+        {
+            runner.StartDialogue($"Day{currentDay}");
+        }
+        else if (runner != null && !string.IsNullOrEmpty(resultNodeAfterMinigame))
+        {
+            runner.StartDialogue(resultNodeAfterMinigame);
+            resultNodeAfterMinigame = null;
+        }
     }
 
     public void EndDay()
     {
-        if (runner == null)
-        {
-            runner = FindFirstObjectByType<DialogueRunner>();
-        }
-        runner.StartDialogue($"Day{currentDay}Post");
+        resultNodeAfterMinigame = $"Day{currentDay}Post";
         currentDay++;
-        // Load next scene or fade out and in
-        //StartDay();
+    }
+
+    public void SetCharacter(string c)
+    {
+        Sprite sprite = Resources.Load<Sprite>($"Characters/{c}");
+
+        if (sprite != null)
+            character.sprite = sprite;
+        else
+            Debug.LogWarning($"Character sprite '{c}' not found.");
     }
 }

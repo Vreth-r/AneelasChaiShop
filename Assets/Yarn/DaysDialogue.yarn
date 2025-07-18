@@ -2,9 +2,12 @@
 ---
 <<declare $customerName = "" as string>>
 <<set $customerName = "Aneela's Friend">>
+<<declare $customerSprite = "" as string>>
+<<set $customerName = "aneelas_friend_DEVART">>
 <<declare $expectedTea = "" as string>>
 <<set $expectedTea = "karak">>
 
+<<setCharacter DialogueSystem {$customerName}>>
 The door opens, and an older woman enters the tea shop.
 Aneela's Friend: Oh my goodness... Is this Aneela's old place?
 Aneela's Friend: Wait—Junnat? It's really you!

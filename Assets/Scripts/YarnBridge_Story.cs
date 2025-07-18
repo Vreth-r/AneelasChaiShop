@@ -2,6 +2,8 @@ using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.SceneManagement;
 
+// this is attatched to the dialogue system game object
+
 public class YarnBridge_Story : MonoBehaviour
 {
     private void Awake()
@@ -12,7 +14,7 @@ public class YarnBridge_Story : MonoBehaviour
     [YarnCommand("loadMinigame")]
     public void LoadMinigame()
     {
-        SceneManager.LoadScene("Minigame");
+        SceneTransitionManager.Instance.TransitionToScene("Minigame");
     }
 
     [YarnCommand("endDay")]
@@ -20,6 +22,12 @@ public class YarnBridge_Story : MonoBehaviour
     {
         // logic and knowledge are the personal ever-goals of a human mind, 
         // however, the strength that one cultivates was meant to be given to his fellow man.
+    }
+
+    [YarnCommand("setCharacter")]
+    public void SetCharacter(string character)
+    {
+        GameManager.Instance.SetCharacter(character);
     }
 }
 
